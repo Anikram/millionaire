@@ -47,7 +47,7 @@ RSpec.describe Game, type: :model do
           game_w_questions = FactoryBot.create(:game_with_questions, user: user)
 
           n.times do
-            game_w_questions.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
+            game_w_questions.answer_current_question!('d')
           end
 
           game_w_questions.take_money!
@@ -70,7 +70,7 @@ RSpec.describe Game, type: :model do
           game_w_questions = FactoryBot.create(:game_with_questions, user: user)
 
           n.times do
-            game_w_questions.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
+            game_w_questions.answer_current_question!('d')
           end
 
           game_w_questions.take_money!
@@ -102,7 +102,7 @@ RSpec.describe Game, type: :model do
       it 'should return GameQuestion class object' do
         expect(game_w_questions.current_game_question).to be_a(GameQuestion)
 
-        game_w_questions.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
+        game_w_questions.answer_current_question!('d')
 
         expect(game_w_questions.current_level).to eq(1)
       end
@@ -112,7 +112,7 @@ RSpec.describe Game, type: :model do
         game = FactoryBot.create(:game_with_questions, user: user)
         15.times do
           prev_level = game.current_level
-          game.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
+          game.answer_current_question!('d')
           expect(game.current_level - prev_level).to eq(1)
         end
       end
