@@ -47,13 +47,13 @@ class QuestionsController < ApplicationController
           answer1: ar[1].squish,
           answer2: ar[2].squish,
           answer3: ar[3].squish,
-          answer4: ar[4].squish,
+          answer4: ar[4].squish
         )
-        failed += unless q.valid?
-                  end
+        failed += 1 unless q.valid?
       end
-
-      failed
     end
+
+    failed
   end
 end
+
