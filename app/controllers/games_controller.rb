@@ -57,12 +57,10 @@ class GamesController < ApplicationController
       )
     end
 
-    if @game.finished?
-      # Если игра закончилась, отправялем юзера на свой профиль
-      redirect_to user_path(current_user)
-    else
-      # Иначе, обратно на экран игры
+    if @answer_is_correct && !@game.finished?
       redirect_to game_path(@game)
+    else
+      redirect_to user_path(current_user)
     end
   end
 
@@ -79,6 +77,17 @@ class GamesController < ApplicationController
         prize: view_context.number_to_currency(@game.prize)
       )
     }
+  end
+
+  def help
+    # используем помощь в игре и по результату задаем сообщение юзеру
+    msg = if @game.use_help(params[:help_type].to_sym)
+            {flash: {info: I18n.t('controllers.games.help_used')}}
+          else
+            {alert: I18n.t('controllers.games.help_not_used')}
+          end
+
+    redirect_to game_path(@game), msg
   end
 
   private
