@@ -25,8 +25,8 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  context 'game mechanics' do
-    it 'answer correct continue' do
+  describe 'game mechanics' do
+    it 'game should continue if answer correct' do
       level = game_w_questions.current_level
       q = game_w_questions.current_game_question
 
@@ -40,7 +40,7 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.finished?).to be_falsey
     end
 
-    context 'method .take_money!' do
+    describe '#take_money!' do
       it ' ::PRIZES should include the game.prize result at any round' do
         n = 1
         while n < 16 do
@@ -56,12 +56,12 @@ RSpec.describe Game, type: :model do
         end
       end
 
-      it ' should return true while game.status == :in_progress' do
+      it ' should return true while game#status == :in_progress' do
         expect(game_w_questions.status).to eq(:in_progress)
         expect(game_w_questions.take_money!).to be_truthy
       end
 
-      it ' should increase user.balance after every game' do
+      it ' should increase user#balance after every game' do
         n = 1
         while n < 16 do
           user = FactoryBot.create(:user)
@@ -81,7 +81,7 @@ RSpec.describe Game, type: :model do
       end
     end
 
-    context 'method .status' do
+    describe '#status' do
       it 'should return :in_progress' do
         expect(game_w_questions.status).to eq(:in_progress)
       end
@@ -92,23 +92,29 @@ RSpec.describe Game, type: :model do
         end
       end
 
-      it 'should return :money' do
-        game_w_questions.take_money!
-        expect(game_w_questions.status).to eq(:money)
+      context 'when #take_money!' do
+        before (:each) do
+          game_w_questions.take_money!
+        end
+
+        it 'should return :money' do
+          expect(game_w_questions.status).to eq(:money)
+        end
       end
     end
 
-    context 'method .current_game_question' do
-      it 'should return GameQuestion class object' do
-        expect(game_w_questions.current_game_question).to be_a(GameQuestion)
-
-        game_w_questions.answer_current_question!('d')
-
-        expect(game_w_questions.current_level).to eq(1)
+    describe '#current_game_question' do
+      context 'when game is created' do
+        it 'should return GameQuestion instance' do
+          expect(game_w_questions.current_game_question).to be_a(GameQuestion)
+          game_w_questions.answer_current_question!('d')
+          expect(game_w_questions.current_level).to eq(1)
+        end
       end
     end
-    context 'method .previous_level' do
-      it 'should return Level of game_question, which less than current by 1' do
+
+    describe '#previous_level' do
+      it 'should be previous_level less then current_level by 1' do
         game = FactoryBot.create(:game_with_questions, user: user)
         15.times do
           prev_level = game.current_level
@@ -119,21 +125,39 @@ RSpec.describe Game, type: :model do
     end
 
 
-    context 'method .answer_current_question!' do   #d - is always correct answer for GameQuestion (game_questions factory)
-      it 'should return false if game is finished or time expired' do
-        15.times do
-          game_w_questions.answer_current_question!('d')
+    describe '#answer_current_question!' do #d - is always correct answer for GameQuestion (game_questions factory)
+      context 'when game is finished' do
+        it 'should return false' do
+          15.times do
+            game_w_questions.answer_current_question!('d')
+          end
+          expect(game_w_questions.answer_current_question!('d')).to be_falsey
+          expect(game_w_questions.status).to eq :won
         end
-        expect(game_w_questions.answer_current_question!('d')).to be_falsey
       end
 
-      it 'should return true it answer was correct' do
-        expect(game_w_questions.answer_current_question!('d')).to be_truthy
+      context 'when time is expired' do
+        it 'should finish the game' do
+          game = FactoryBot.create :game_with_questions, created_at: Time.now - 36.minutes, finished_at: Time.now
+          expect(game.finished?).to eq true
+          game.time_out!
+          expect(game.answer_current_question!('d')).to be_falsey
+          expect(game.status).to eq :timeout
+        end
       end
 
-      it 'should return false and finish the game, if answer is incorrect' do
-        expect(game_w_questions.answer_current_question!('a')).to be_falsey
-        expect(game_w_questions.status).to eq(:fail)
+      context 'when answer is correct' do
+        it 'should return true' do
+          expect(game_w_questions.answer_current_question!('d')).to be_truthy
+          expect(game_w_questions.status).to eq :in_progress
+        end
+      end
+
+      context 'when answer is incorrect' do
+        it 'should return false and game#status = :fail' do
+          expect(game_w_questions.answer_current_question!('a')).to be_falsey
+          expect(game_w_questions.status).to eq(:fail)
+        end
       end
     end
   end

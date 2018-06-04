@@ -6,6 +6,7 @@ FactoryBot.define do
     current_level 0
     is_failed false
     prize 0
+    created_at 0
 
     factory :game_with_questions do
       after(:build) { |game|
