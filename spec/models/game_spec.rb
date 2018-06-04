@@ -93,12 +93,18 @@ RSpec.describe Game, type: :model do
       end
 
       context 'when #take_money!' do
-        before (:each) do
+        it 'should return :money' do
           game_w_questions.take_money!
+          expect(game_w_questions.status).to eq(:money)
         end
 
-        it 'should return :money' do
-          expect(game_w_questions.status).to eq(:money)
+        it 'should return amount of money' do
+          game = FactoryBot.create :game_with_questions, current_level: 3
+
+          game.take_money!
+
+          expect(game.current_level).to eq 3
+          expect(game.prize).to eq 300
         end
       end
     end
