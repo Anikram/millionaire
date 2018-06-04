@@ -48,13 +48,14 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'answered correctly' do
-      put :answer, id: game_w_questions.id, letter: game_w_questions.current_game_question.correct_answer_key
+      put :answer, id: game_w_questions.id, letter: 'd'
 
       game = assigns(:game)
 
       expect(game.finished?)
       expect(game.current_level).to be > 0
       expect(response).to redirect_to(game_path(game))
+      expect(flash.empty?).to be_truthy
     end
   end
 end
