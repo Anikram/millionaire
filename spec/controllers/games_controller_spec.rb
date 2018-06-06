@@ -121,9 +121,7 @@ RSpec.describe GamesController, type: :controller do
 
     context 'when User answers incorrectly' do
       it 'should end the game, flash and redirect to profile' do
-        game_w_questions.answer_current_question!('a')
-
-        put :answer, id: game_w_questions.id
+        put :answer, id: game_w_questions.id, letter: 'a'
 
         expect(flash[:alert]).to be
         expect(game_w_questions.status).to eq :fail
