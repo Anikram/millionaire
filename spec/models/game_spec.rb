@@ -51,6 +51,7 @@ RSpec.describe Game, type: :model do
           end
 
           game_w_questions.take_money!
+          expect(game_w_questions.status).not_to eq :finished
           expect(game_w_questions.prize).to eq(Game::PRIZES[game_w_questions.previous_level])
           n += 1
         end
@@ -74,6 +75,7 @@ RSpec.describe Game, type: :model do
           end
 
           game_w_questions.take_money!
+          expect(game_w_questions.status).not_to eq :finished
           expect(game_w_questions.prize).to eq(Game::PRIZES[game_w_questions.previous_level])
           expect(user.balance - stored_balance).to eq(user.balance)
           n += 1
@@ -105,6 +107,7 @@ RSpec.describe Game, type: :model do
 
           expect(game.current_level).to eq 3
           expect(game.prize).to eq 300
+          expect(game_w_questions.status).not_to eq :finished
         end
       end
     end
@@ -115,6 +118,7 @@ RSpec.describe Game, type: :model do
           expect(game_w_questions.current_game_question).to be_a(GameQuestion)
           game_w_questions.answer_current_question!('d')
           expect(game_w_questions.current_level).to eq(1)
+          expect(game_w_questions.status).not_to eq :finished
         end
       end
     end
@@ -126,6 +130,7 @@ RSpec.describe Game, type: :model do
           prev_level = game.current_level
           game.answer_current_question!('d')
           expect(game.current_level - prev_level).to eq(1)
+          expect(game_w_questions.status).not_to eq :finished
         end
       end
     end
@@ -146,7 +151,6 @@ RSpec.describe Game, type: :model do
         it 'should finish the game' do
           game = FactoryBot.create :game_with_questions, created_at: Time.now - 36.minutes, finished_at: Time.now
           expect(game.finished?).to eq true
-          game.time_out!
           expect(game.answer_current_question!('d')).to be_falsey
           expect(game.status).to eq :timeout
         end
@@ -155,7 +159,7 @@ RSpec.describe Game, type: :model do
       context 'when answer is correct' do
         it 'should return true' do
           expect(game_w_questions.answer_current_question!('d')).to be_truthy
-          expect(game_w_questions.status).to eq :in_progress
+          expect(game_w_questions.status).not_to eq :finished
         end
       end
 
