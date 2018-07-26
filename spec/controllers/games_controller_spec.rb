@@ -67,6 +67,19 @@ RSpec.describe GamesController, type: :controller do
         expect(flash[:alert]).to be
       end
     end
+
+    context 'when trying to use #help ' do
+      before(:each) {post :create}
+      it '200ok will not be returned' do
+        expect(response.status).not_to eq 200
+      end
+      it 'will redirected to login page' do
+        expect(response).to redirect_to(new_user_session_path)
+      end
+      it 'will show flashing alert' do
+        expect(flash[:alert]).to be
+      end
+    end
   end
 
   describe 'User' do
