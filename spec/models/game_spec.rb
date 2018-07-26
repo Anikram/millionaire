@@ -86,12 +86,17 @@ RSpec.describe Game, type: :model do
     describe '#status' do
       it 'should return :in_progress' do
         expect(game_w_questions.status).to eq(:in_progress)
+        expect(game_w_questions.finished?).to be false
       end
 
       it 'should return :won' do
-        if game_w_questions.current_level > 14
-          expect(game_w_questions.status).to eq(:won)
+        15.times do
+          game_w_questions.answer_current_question!('d')
         end
+
+        expect(game_w_questions.current_level).to eq(15)
+        expect(game_w_questions.status).to eq(:won)
+        expect(game_w_questions.finished?).to be true
       end
 
       context 'when #take_money!' do
@@ -107,7 +112,7 @@ RSpec.describe Game, type: :model do
 
           expect(game.current_level).to eq 3
           expect(game.prize).to eq 300
-          expect(game_w_questions.status).not_to eq :finished
+          expect(game_w_questions.finished?).to be false
         end
       end
     end
@@ -118,7 +123,7 @@ RSpec.describe Game, type: :model do
           expect(game_w_questions.current_game_question).to be_a(GameQuestion)
           game_w_questions.answer_current_question!('d')
           expect(game_w_questions.current_level).to eq(1)
-          expect(game_w_questions.status).not_to eq :finished
+          expect(game_w_questions.finished?).to be false
         end
       end
     end
@@ -130,7 +135,7 @@ RSpec.describe Game, type: :model do
           prev_level = game.current_level
           game.answer_current_question!('d')
           expect(game.current_level - prev_level).to eq(1)
-          expect(game_w_questions.status).not_to eq :finished
+          expect(game_w_questions.finished?).to be false
         end
       end
     end
@@ -144,6 +149,7 @@ RSpec.describe Game, type: :model do
           end
           expect(game_w_questions.answer_current_question!('d')).to be_falsey
           expect(game_w_questions.status).to eq :won
+          expect(game_w_questions.finished?).to be true
         end
       end
 
@@ -160,6 +166,7 @@ RSpec.describe Game, type: :model do
         it 'should return true' do
           expect(game_w_questions.answer_current_question!('d')).to be_truthy
           expect(game_w_questions.status).not_to eq :finished
+          expect(game_w_questions.finished?).to be false
         end
       end
 
@@ -167,6 +174,7 @@ RSpec.describe Game, type: :model do
         it 'should return false and game#status = :fail' do
           expect(game_w_questions.answer_current_question!('a')).to be_falsey
           expect(game_w_questions.status).to eq(:fail)
+          expect(game_w_questions.finished?).to be true
         end
       end
     end
