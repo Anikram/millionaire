@@ -20,7 +20,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'will show flashing alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Вам необходимо войти в систему или зарегистрироваться."
       end
     end
 
@@ -35,7 +35,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'will show flashing alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Вам необходимо войти в систему или зарегистрироваться."
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'will show flashing alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Вам необходимо войти в систему или зарегистрироваться."
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'will show flashing alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Вам необходимо войти в систему или зарегистрироваться."
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(new_user_session_path)
       end
       it 'will show flashing alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Вам необходимо войти в систему или зарегистрироваться."
       end
     end
   end
@@ -97,7 +97,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'flashes a notice' do
-        expect(flash[:notice]).to be
+        expect(flash[:notice]).to eq "Игра началась в #{Time.now}, время пошло"
       end
     end
 
@@ -136,7 +136,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to(root_path)
       end
       it 'flashes an alert message' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Это не ваша игра!"
       end
     end
 
@@ -147,7 +147,7 @@ RSpec.describe GamesController, type: :controller do
         expect(response).to redirect_to user_path(user)
       end
       it 'flashes the warning' do
-        expect(flash[:warning]).to be
+        expect(flash[:warning]).to eq "Игра окончена, ваш выигрыш 0 ₽. Заходите еще!"
       end
     end
 
@@ -165,7 +165,7 @@ RSpec.describe GamesController, type: :controller do
       end
 
       it 'flashes the alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to eq "Вы еще не завершили игру"
       end
     end
 
@@ -173,7 +173,8 @@ RSpec.describe GamesController, type: :controller do
       before(:each) {put :answer, id: game_w_questions.id, letter: 'a'}
 
       it 'flashes alert' do
-        expect(flash[:alert]).to be
+        expect(flash[:alert]).to include "Правильный ответ:"
+        expect(flash[:alert]).to include "Игра закончена, ваш приз 0 ₽"
       end
       it 'redirects to user profile' do
         expect(response).to redirect_to(user_path(game_w_questions.user))
