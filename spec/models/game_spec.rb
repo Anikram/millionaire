@@ -165,7 +165,7 @@ RSpec.describe Game, type: :model do
       context 'when answer is correct' do
         it 'should return true' do
           expect(game_w_questions.answer_current_question!('d')).to be_truthy
-          expect(game_w_questions.status).not_to eq :finished
+          expect(game_w_questions.status).not_to eq :fail
           expect(game_w_questions.finished?).to be false
         end
       end
@@ -173,7 +173,7 @@ RSpec.describe Game, type: :model do
       context 'when answer is incorrect' do
         it 'should return false and game#status = :fail' do
           expect(game_w_questions.answer_current_question!('a')).to be_falsey
-          expect(game_w_questions.status).to eq(:fail)
+          expect(game_w_questions.status).to eq :fail
           expect(game_w_questions.finished?).to be true
         end
       end
