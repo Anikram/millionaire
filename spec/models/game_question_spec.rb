@@ -97,12 +97,11 @@ RSpec.describe GameQuestion, type: :model do
     let(:game_w_questions) {FactoryBot.create :game_with_questions, user: user}
     context 'when fifty_fifty help is used' do
       it 'game should be in progress' do
-        expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:fifty_fifty)
         expect(game_w_questions.status).to be :in_progress
+        expect(game_w_questions.current_game_question.help_hash).to include(:fifty_fifty)
       end
       it 'game.fifty_fifty_used eq true' do
-        expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:fifty_fifty)
         expect(game_w_questions.fifty_fifty_user).to be_truthy
       end
@@ -111,12 +110,11 @@ RSpec.describe GameQuestion, type: :model do
 
     context 'when audience help is used' do
       it 'game should be in progress' do
-        expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:audience_help)
         expect(game_w_questions.status).to be :in_progress
+        expect(game_w_questions.current_game_question.help_hash).to include(:audience_help)
       end
       it 'game.audience_help_used eq true' do
-        expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:audience_help)
         expect(game_w_questions.audience_help_used).to be_truthy
       end
@@ -124,14 +122,14 @@ RSpec.describe GameQuestion, type: :model do
 
     context 'when friend_call help is used' do
       it 'game should be in progress' do
-        expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:friend_call)
         expect(game_w_questions.status).to be :in_progress
+        expect(game_w_questions.current_game_question.help_hash).to include(:friend_call)
       end
-      it 'game.friend_call_used eq true' do
-        expect(game_w_questions.current_level).to be 0
+      it 'game.friend_call_used show expected answer' do
+        allow(GameHelpGenerator).to receive(:friend_call) {"Патрон сказа что ответ - Herbie Hankok - Cantalupo Island"}
         game_w_questions.use_help(:friend_call)
-        expect(game_w_questions.friend_call_used).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash[:friend_call]).to eq("Патрон сказа что ответ - Herbie Hankok - Cantalupo Island")
       end
     end
 
@@ -140,10 +138,13 @@ RSpec.describe GameQuestion, type: :model do
         expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:audience_help)
         expect(game_w_questions.audience_help_used).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash).to include(:audience_help)
         game_w_questions.use_help(:fifty_fifty)
         expect(game_w_questions.fifty_fifty_user).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash).to include(:fifty_fifty)
         game_w_questions.use_help(:friend_call)
         expect(game_w_questions.friend_call_used).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash).to include(:friend_call)
 
         game_w_questions.answer_current_question!('a')
 
@@ -155,10 +156,13 @@ RSpec.describe GameQuestion, type: :model do
         expect(game_w_questions.current_level).to be 0
         game_w_questions.use_help(:audience_help)
         expect(game_w_questions.audience_help_used).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash).to include(:audience_help)
         game_w_questions.use_help(:fifty_fifty)
         expect(game_w_questions.fifty_fifty_user).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash).to include(:fifty_fifty)
         game_w_questions.use_help(:friend_call)
         expect(game_w_questions.friend_call_used).to be_truthy
+        expect(game_w_questions.current_game_question.help_hash).to include(:friend_call)
 
         game_w_questions.answer_current_question!('d')
 
