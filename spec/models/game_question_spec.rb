@@ -42,17 +42,9 @@ RSpec.describe GameQuestion, type: :model do
   end
 
   context 'game_question.correct_answer_key' do
-    it 'should return value - eq to iterator' do
-      100.times do
-        keys = %w(a b c d).shuffle!
-        values = %w(1 2 3 4).shuffle!
-        hash = Hash[keys.zip values]
-        q = FactoryBot.create(:game_question, a: hash['a'], b: hash['b'], c: hash['c'], d: hash['d'],)
-        #puts hash
-        hash_key = hash.select {|key, value| value == '1' ? key : nil}
-
-        expect(q.correct_answer_key == hash_key.keys[0]).to be_truthy
-      end
+    it 'should return correct answer letter' do
+      game_w_questions = FactoryBot.create(:game_with_questions)
+      expect(game_w_questions.current_game_question.correct_answer_key).to eq 'd'
     end
   end
 
