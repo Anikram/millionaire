@@ -119,9 +119,11 @@ RSpec.describe Game, type: :model do
 
     describe '#current_game_question' do
       context 'when game is created' do
-        it 'should return GameQuestion instance' do
-          expect(game_w_questions.current_game_question).to be_a(GameQuestion)
+        it 'should return number of current level' do
+          expect(game_w_questions.current_game_question.level).to eq(0)
+          expect(game_w_questions.current_level).to eq(0)
           game_w_questions.answer_current_question!('d')
+          expect(game_w_questions.current_game_question.level).to eq(1)
           expect(game_w_questions.current_level).to eq(1)
           expect(game_w_questions.finished?).to be false
         end
@@ -131,12 +133,12 @@ RSpec.describe Game, type: :model do
     describe '#previous_level' do
       it 'should be previous_level less then current_level by 1' do
         game = FactoryBot.create(:game_with_questions, user: user)
-        15.times do
-          prev_level = game.current_level
-          game.answer_current_question!('d')
-          expect(game.current_level - prev_level).to eq(1)
-          expect(game_w_questions.finished?).to be false
-        end
+        expect(game.previous_level).to eq(-1)
+        expect(game.current_level).to eq(0)
+        game.answer_current_question!('d')
+        game.answer_current_question!('d')
+        expect(game.previous_level).to eq(1)
+        expect(game.current_level).to eq(2)
       end
     end
 
