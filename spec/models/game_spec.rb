@@ -107,7 +107,6 @@ RSpec.describe Game, type: :model do
 
         it 'should return amount of money' do
           game = FactoryBot.create :game_with_questions, current_level: 3
-
           game.take_money!
 
           expect(game.current_level).to eq 3
@@ -119,26 +118,27 @@ RSpec.describe Game, type: :model do
 
     describe '#current_game_question' do
       context 'when game is created' do
+        let(:game) { FactoryBot.create(:game_with_questions, user: user, current_level: 5) }
+
         it 'should return number of current level' do
-          expect(game_w_questions.current_game_question.level).to eq(0)
-          expect(game_w_questions.current_level).to eq(0)
-          game_w_questions.answer_current_question!('d')
-          expect(game_w_questions.current_game_question.level).to eq(1)
-          expect(game_w_questions.current_level).to eq(1)
-          expect(game_w_questions.finished?).to be false
+          expect(game.current_game_question.level).to eq(5)
+          expect(game.current_level).to eq(5)
+          game.answer_current_question!('d')
+          expect(game.current_game_question.level).to eq(6)
+          expect(game.current_level).to eq(6)
+          expect(game.finished?).to be false
         end
       end
     end
 
     describe '#previous_level' do
       it 'should be previous_level less then current_level by 1' do
-        game = FactoryBot.create(:game_with_questions, user: user)
-        expect(game.previous_level).to eq(-1)
-        expect(game.current_level).to eq(0)
-        game.answer_current_question!('d')
-        game.answer_current_question!('d')
-        expect(game.previous_level).to eq(1)
-        expect(game.current_level).to eq(2)
+        expect(game_w_questions.previous_level).to eq(-1)
+        expect(game_w_questions.current_level).to eq(0)
+        game_w_questions.answer_current_question!('d')
+        game_w_questions.answer_current_question!('d')
+        expect(game_w_questions.previous_level).to eq(1)
+        expect(game_w_questions.current_level).to eq(2)
       end
     end
 
