@@ -120,8 +120,9 @@ RSpec.describe Game, type: :model do
       context 'when game is created' do
         let(:game) { FactoryBot.create(:game_with_questions, user: user, current_level: 5) }
 
-        it 'should return number of current level' do
-          expect(game.current_level).to eq(5)
+        it 'should return number of current question' do
+          question = game.game_questions.to_a
+          expect(game.current_game_question).to eq(question[5])
         end
       end
     end
