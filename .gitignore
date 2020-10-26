@@ -16,4 +16,6 @@
 !/log/.keep
 /tmp
 /config/secrets.yml
+/vendor
+/vendor/assets
 /vendor/cache
