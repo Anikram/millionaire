@@ -53,14 +53,14 @@ GEM
     commonjs (0.2.7)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
-    devise (4.1.1)
+    devise (4.7.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
-      railties (>= 4.1.0, < 5.1)
+      railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise-i18n (1.5.1)
-      devise (>= 3.4)
+    devise-i18n (1.9.2)
+      devise (>= 4.7.1)
     diff-lcs (1.4.4)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -186,7 +186,7 @@ DEPENDENCIES
   bigdecimal (~> 1.4)
   byebug
   capybara (= 3.33.0)
-  devise (~> 4.1.1)
+  devise (>= 4.7.1)
   devise-i18n
   factory_bot
   font-awesome-rails
