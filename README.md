@@ -13,26 +13,27 @@
 git clone git@github.com:Anikram/millionaire.git
 ```
 
-2. Воссоздайте структуру базы данных
- 
-```bash
-bundle exec rake db:migrate
-```
-
-3. Установите gem Bundler
+2. Установите gem Bundler
 ```bash
 gem install bundler
 ```
 
-4. Актуализируйте набор библиотек
+3. Актуализируйте набор библиотек
 ```bash
 bundle update
+```
+
+4. Воссоздайте структуру базы данных
+ 
+```bash
+bundle exec rake db:migrate
 ```
 
 5. Прогоните тесты для проверки работоспособности
 ```bash
 bundle exec rspec
 ```
+
 В случае неудачи, обратитесь к тех поддержке (Anikram)[https://github.com/Anikram]
 
 6. Запустите локальный сервер

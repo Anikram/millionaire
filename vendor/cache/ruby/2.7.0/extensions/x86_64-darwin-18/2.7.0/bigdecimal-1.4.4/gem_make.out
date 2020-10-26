@@ -1,0 +1,25 @@
+current directory: /Users/anikram/Dropbox/dev/RUBY,RAILS/my_new_cv/millionaire/vendor/cache/ruby/2.7.0/gems/bigdecimal-1.4.4/ext/bigdecimal
+/Users/anikram/.rvm/rubies/ruby-2.7.0/bin/ruby -I /Users/anikram/.rvm/rubies/ruby-2.7.0/lib/ruby/site_ruby/2.7.0 -r ./siteconf20201026-19657-835de9.rb extconf.rb
+checking RUBY_BIGDECIMAL_VERSION... 1.4.4
+checking for labs() in stdlib.h... yes
+checking for llabs() in stdlib.h... yes
+checking for finite() in math.h... yes
+checking for isfinite() in math.h... no
+checking for struct RRational in ruby.h... no
+checking for rb_rational_num() in ruby.h... yes
+checking for rb_rational_den() in ruby.h... yes
+checking for rb_array_const_ptr() in ruby.h... yes
+checking for rb_sym2str() in ruby.h... yes
+creating Makefile
+
+current directory: /Users/anikram/Dropbox/dev/RUBY,RAILS/my_new_cv/millionaire/vendor/cache/ruby/2.7.0/gems/bigdecimal-1.4.4/ext/bigdecimal
+make "DESTDIR=" clean
+
+current directory: /Users/anikram/Dropbox/dev/RUBY,RAILS/my_new_cv/millionaire/vendor/cache/ruby/2.7.0/gems/bigdecimal-1.4.4/ext/bigdecimal
+make "DESTDIR="
+compiling bigdecimal.c
+linking shared-object bigdecimal.bundle
+
+current directory: /Users/anikram/Dropbox/dev/RUBY,RAILS/my_new_cv/millionaire/vendor/cache/ruby/2.7.0/gems/bigdecimal-1.4.4/ext/bigdecimal
+make "DESTDIR=" install
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 bigdecimal.bundle ./.gem.20201026-19657-1ugkcbt

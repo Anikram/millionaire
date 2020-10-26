@@ -11,9 +11,10 @@ gem 'jquery-rails'
 gem 'twitter-bootstrap-rails'
 gem 'font-awesome-rails'
 gem 'russian'
+gem 'bigdecimal', '~>1.4'
 
 group :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3', '< 1.4'
   gem 'byebug'
   gem 'rspec-rails', '~>3.4'
   gem 'factory_bot'
@@ -21,7 +22,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '3.33.0'
   gem 'launchy'
 end
 
